@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 csv_file = open('country.csv', 'w')
 csv_writer = csv.writer(csv_file)
-csv_writer.writerow(['country'])
+csv_writer.writerow(['url', 'country'])
 
 def build():
     with open('urlset.csv', mode='r') as csv_file:
@@ -23,10 +23,9 @@ def build():
             table = soup.find('table')
 
             for elem in table.find_all('tr'):
-                csv_writer.writerow([elem.text])
+                csv_writer.writerow([row["url"],elem.text])
                 print(elem.text)
                 print()
             csv_file.close
         print(f'Processed {line_count} lines.')
-
 

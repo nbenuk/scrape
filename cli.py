@@ -1,6 +1,6 @@
 import sitemap
 import country
-
+import index
 print('\n---------------Welcome------------------------------Welcome------------------------------Welcome---------------\n')
 args=[]
 for arg in ((input('Enter a command: ').split(' '))):
@@ -8,14 +8,16 @@ for arg in ((input('Enter a command: ').split(' '))):
 while (args[0] != 'q'):
     if args[0] == 'build':
         sitemap.sitemap()
+        country.build()
+        index.index()
     elif args[0] == 'load':
-        pass
+        index.index()
     else:
         try:
             if args[0] == 'print':
-                pass
+                index.index()
             elif args[0] == 'find':
-                pass
+                index.index()
         except:
             print ('invalid input')         
     args = []
