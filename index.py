@@ -72,6 +72,17 @@ def index():
     # print(dict)
     dict
 
+
+    # creawl first website
+    # crawl next website in queue
+    # check if ok to crawl
+    # fetch and download
+    # parse for new url
+    # add url to queue
+    # politeness policy
+
+
+
     # save inverted index
     # move this out of here 
     args = []
