@@ -1,6 +1,7 @@
 import csv
 from bs4 import BeautifulSoup
 import requests
+import time
 csv_file = open('country.csv', 'w')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['url', 'country'])
@@ -27,5 +28,10 @@ def build():
                 print(elem.text)
                 print()
             csv_file.close
+            # is that right?
+            print('Sleeping for 5 seconds')
+            time.sleep(5)
+
+            
         print(f'Processed {line_count} lines.')
 

@@ -72,8 +72,8 @@ def index():
     # print(dict)
     dict
 
-
-
+    # save inverted index
+    # move this out of here 
     args = []
     for arg in ((input('Enter a command: ').split(' '))):
         args.append(arg)
