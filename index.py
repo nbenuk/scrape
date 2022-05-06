@@ -73,7 +73,18 @@ def index():
     dict
 
 
+    # creawl first website
+    # crawl next website in queue
+    # check if ok to crawl
+    # fetch and download
+    # parse for new url
+    # add url to queue
+    # politeness policy
 
+
+
+    # save inverted index
+    # move this out of here 
     args = []
     for arg in ((input('Enter a command: ').split(' '))):
         args.append(arg)
