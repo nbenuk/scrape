@@ -1,113 +1,111 @@
 import csv
-def intersection(lst1, lst2):
-    lst3 = [value for value in lst1 if value in lst2]
-    return lst3
+
+import pickle
+from re import T
+
+
+def index_save(index, name):
+    with open( name+'.pickle', 'wb') as f:
+        pickle.dump(index, f, pickle.HIGHEST_PROTOCOL)
+
+def index_load(name):
+    with open(name+'.pickle', 'rb') as f:
+
+        return pickle.load(f)
+
+
+def intersection(list1, list2):
+    intersection = list()
+    for item in list1:
+        if item in list2:
+            intersection.append(item)
+    return intersection
 
 def getLink(i):
-    with open('cUrls.csv', newline='') as f:
-        reader = csv.reader(f)
-        data = list(reader)
-        return data[i]
+    with open("country.csv", "r") as csv_file:
+        link=[]
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for lines in csv_reader:
+            if len(lines) == 2:
+                link.append(lines[1])
+        return link[i-2]
+        # for lines in csv_reader:
+        if len(csv_reader[i]) == 2:
+            return(csv_reader[i][1])
+            link.append(lines[1])
+        else:
+            return "Error"
+
 
 def index():
+    print('*** Building Index ***')
     # this will open the file
     file = open('country.csv', encoding='utf8')
     read = file.read()
     file.seek(0)
-    read
 
-    # to obtain the
-    # number of lines
-    # in file
-    line = 1
-    for word in read:
-        if word == '\n':
-            line += 1
-    print("Number of lines in file is: ", line)
-
-    # create a list to
-    # store each line as
-    # an element of list
+    # for each line/link
     array = []
-    for i in range(line):
-        array.append(file.readline())
+    link =[]
+    with open("country.csv", "r") as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for lines in csv_reader:
+            if len(lines) == 2:
+                link.append(lines[1])
+            array.append(lines[0])
 
-    array
+    # remove punctuation
     punc = '''!()-[]{};:'"\, <>./?@#$%^&*_~'''
-    for ele in read:
-        if ele in punc:
-            read = read.replace(ele, " ")
-            
-    read
-    # #############################Case sensitive
-    # to maintain uniformity
-    # read=read.lower()					
-    read
+    for char in read:
+        if read in punc:
+            read = read.replace(char, " ")
+
     from nltk.tokenize import word_tokenize
     import nltk
     from nltk.corpus import stopwords
     nltk.download('stopwords')
 
-    for i in range(1):
-        # this will convert
-        # the word into tokens
-        text_tokens = word_tokenize(read)
+    print('*** Tokenising Data ***')
+    print('Please wait this will take a few minutes')
 
-    tokens_without_sw = [
+    # tokenise text
+
+    text_tokens = word_tokenize(read)
+    # remove stopwords
+    tokens_no_sw = [
         word for word in text_tokens if not word in stopwords.words()]
 
-    print(tokens_without_sw)
     dict = {}
-
-    for i in range(line):
+    freq={}
+    print('*** Processing Data ***')
+    for i in range(len(array)):
+        # index docs
         check = array[i]
-        for item in tokens_without_sw:
-
+        for item in tokens_no_sw:
             if item in check:
                 if item not in dict:
                     dict[item] = []
-
                 if item in dict:
                     dict[item].append(i+1)
-    # print(dict)
-    dict
+        word_count = {}
 
-
-    # creawl first website
-    # crawl next website in queue
-    # check if ok to crawl
-    # fetch and download
-    # parse for new url
-    # add url to queue
-    # politeness policy
-
-
+        # count freq
+        tokens = word_tokenize(array[i])
+        for item in tokens:
+            if item not in freq:
+                freq[item]=[]
+            if item in word_count:
+                word_count[item] += 1
+            else:
+                word_count[item] = 1
+        for item in word_count:
+            freq[item].append([i+1,word_count[item]])
 
     # save inverted index
-    # move this out of here 
-    args = []
-    for arg in ((input('Enter a command: ').split(' '))):
-        args.append(arg)
-    while (args[0] != 'q'):
-        if len(args) == 0:
-            pass
-        elif len(args) == 1:
-            print(args[0])
-            [res] = [val for key, val in dict.items() if args[0] in key]
-            res = list(dict.fromkeys(res))
-            for i in res:
-                print(getLink(i))
-            pass
-        elif len(args)==2:
-            [res] = [val for key, val in dict.items() if args[0] in key]
-            [res2] = [val for key, val in dict.items() if args[1] in key]
-            mylist=(intersection(res,res2))
-            mylist = list(dict.fromkeys(mylist))
-            for i in mylist:
-                print(getLink(i))
-            # print(str(res))
+    index_save(dict,'dict')
+    index_save(freq,'freq')
+    print('*** Index Saved ***')
 
-        args = []
-        for arg in ((input('Enter a command: ').split(' '))):
-            args.append(arg)
-index()
+    
+# index()
+# print (index_load())
